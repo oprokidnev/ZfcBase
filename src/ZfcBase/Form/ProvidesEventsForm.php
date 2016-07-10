@@ -9,6 +9,8 @@ use Zend\EventManager\EventManager;
 
 class ProvidesEventsForm extends Form
 {
+    public static $sharedEventManager = null;
+
     /**
      * @var EventManagerInterface
      */
@@ -38,8 +40,7 @@ class ProvidesEventsForm extends Form
         if (!$this->events instanceof EventManagerInterface) {
             $identifiers = array(__CLASS__, get_called_class());
             if (isset($this->eventIdentifier)) {
-                if ((is_string($this->eventIdentifier))
-                    || (is_array($this->eventIdentifier))
+                if ((is_string($this->eventIdentifier)) || (is_array($this->eventIdentifier))
                     || ($this->eventIdentifier instanceof Traversable)
                 ) {
                     $identifiers = array_unique($identifiers + (array) $this->eventIdentifier);
@@ -48,7 +49,7 @@ class ProvidesEventsForm extends Form
                 }
                 // silently ignore invalid eventIdentifier types
             }
-            $this->setEventManager(new EventManager($identifiers));
+            $this->setEventManager(new EventManager(static::$sharedEventManager, $identifiers));
         }
         return $this->events;
     }

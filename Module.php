@@ -19,4 +19,11 @@ class Module implements AutoloaderProviderInterface
             ),
         );
     }
+
+
+    public function onBootstrap(\Zend\Mvc\MvcEvent $event)
+    {
+        \ZfcBase\Form\ProvidesEventsForm::$sharedEventManager = $event->getApplication()->getEventManager()->getSharedManager();
+        \ZfcBase\InputFilter\ProvidesEventsInputFilter::$sharedEventManager = $event->getApplication()->getEventManager()->getSharedManager();
+    }
 }

@@ -8,6 +8,8 @@ use Zend\EventManager\EventManager;
 
 class ProvidesEventsInputFilter extends InputFilter
 {
+
+    public static $sharedEventManager = null;
     /**
      * @var EventManagerInterface
      */
@@ -47,7 +49,7 @@ class ProvidesEventsInputFilter extends InputFilter
                 }
                 // silently ignore invalid eventIdentifier types
             }
-            $this->setEventManager(new EventManager($identifiers));
+            $this->setEventManager(new EventManager(static::$sharedEventManager, $identifiers));
         }
         return $this->events;
     }
